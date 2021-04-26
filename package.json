@@ -1,0 +1,10 @@
+{
+  "name": "nabp",
+  "dependencies": {
+    "@serialport/parser-readline": "^9.0.7",
+    "colors": "^1.4.0",
+    "prompt": "^1.1.0",
+    "serialport": "^9.0.7",
+    "ws": "^7.4.5"
+  }
+}
