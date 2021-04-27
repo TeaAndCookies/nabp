@@ -1,2 +1,5 @@
-.idea
+.idea/
+*.log
 node_modules/
+.npm/
+out/

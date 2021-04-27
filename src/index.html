@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NABP</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script defer src="renderer.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <table
+          id="status"
+          data-message-yes="Connected"
+          data-message-no="Disconnected"
+      >
+        <tr class="status-line">
+          <th class="status-line__label">TCode device:</th>
+          <td class="status-line__value" id="status__port">Disconnected</td>
+        </tr>
+        <tr class="status-line">
+          <th class="status-line__label">ScriptPlayer:</th>
+          <td class="status-line__value" id="status__script-player">Disconnected</td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="control" class="container container--secondary" data-disabled-title="manual control disabled while there is a playing script">
+      <div id="control__range">
+        <input type="range" id="control__range__input" min="0" max="100" step="1">
+      </div>
+      <div id="control__label">50 %</div>
+    </div>
+  </body>
+</html>
