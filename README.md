@@ -8,3 +8,6 @@ It works by imitating a [Buttplug](https://buttplug.io/) server and sending TCod
 2) unpack the archive somewhere and run `nabp.exe`
 3) NABP will automatically scan your ports for OSR2
 4) in ScriptPlayer click "Devices -> Buttplug / Intiface -> Connect" and you should be ready for action
+
+
+Note: Currently you need a beta version of ScriptPlayer from AppVeyor, see https://github.com/FredTungsten/ScriptPlayer/wiki/Downloading-Beta-Builds
