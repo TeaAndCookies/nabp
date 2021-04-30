@@ -37,6 +37,10 @@ function enableRange() {
 }
 
 function disableRange() {
+    if ($controlRangeInput.disabled === true) {
+        return;
+    }
+
     $control.classList.add('disabled');
     $control.setAttribute('title', $control.dataset.disabledTitle);
     $controlRangeInput.disabled = true;
@@ -129,17 +133,20 @@ function handleMessage(ws, type, message) {
             sendOk(ws, message.Id);
             break;
         case 'LinearCmd':
+            sendOk(ws, message.Id);
+
             disableRange();
+
             let vector = message.Vectors[0];
             let position = Math.min(Math.max(parseFloat(vector.Position), 0), 0.999).toFixed(3).substr(2);
             sendTcode(`L0${position}I${vector.Duration}`);
-            sendOk(ws, message.Id);
             break;
         case 'StopDeviceCmd':
+            sendOk(ws, message.Id);
+
             enableRange();
             setRange(50, false);
             sendTcode('L0500I1000');
-            sendOk(ws, message.Id);
             break;
         default:
             log.info('noop');
