@@ -20,7 +20,11 @@ const $controlLabel = document.getElementById('control__label');
 let rangeTimeout = null;
 $controlRangeInput.oninput = function () {
     $controlLabel.innerText = `${this.value} %`;
-    let position = Math.min(Math.max(Math.round(parseInt(this.value, 10) * 10), 0), 999);
+    let value = this.value;
+    let position = Math.min(Math.max(Math.round(parseInt(value, 10) * 10), 0), 999);
+    if (value > 0 && value < 10) {
+        position = '0' + position;
+    }
 
     if (rangeTimeout !== null) {
         clearTimeout(rangeTimeout);
