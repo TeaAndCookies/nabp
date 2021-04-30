@@ -42,14 +42,16 @@ function disableRange() {
     $controlRangeInput.disabled = true;
 }
 
-function setRange (value) {
+function setRange (value, dispatchInputEvent) {
     var event = new Event('input', {
         bubbles: true,
         cancelable: true,
     });
 
     $controlRangeInput.value = value;
-    $controlRangeInput.dispatchEvent(event);
+    if (dispatchInputEvent) {
+        $controlRangeInput.dispatchEvent(event);
+    }
 }
 
 // websocket server - start
@@ -129,13 +131,13 @@ function handleMessage(ws, type, message) {
         case 'LinearCmd':
             disableRange();
             let vector = message.Vectors[0];
-            let position = Math.min(Math.max(Math.round(vector.Position * 1000), 0), 999);
+            let position = Math.min(Math.max(parseFloat(vector.Position), 0), 0.999).toFixed(3).substr(2);
             sendTcode(`L0${position}I${vector.Duration}`);
             sendOk(ws, message.Id);
             break;
         case 'StopDeviceCmd':
             enableRange();
-            setRange(50);
+            setRange(50, false);
             sendTcode('L0500I1000');
             sendOk(ws, message.Id);
             break;
