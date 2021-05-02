@@ -1,6 +1,6 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: #121212;
+  background: #191919;
   color: #e1e1e1;
 }
 
@@ -14,7 +14,7 @@ body {
 }
 
 .container--secondary {
-  background: #191919;
+  background: #121212;
 }
 
 #status th,
@@ -102,4 +102,48 @@ input[type=range]::-webkit-slider-runnable-track {
 
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #444;
+}
+
+#title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  background: #121212;
+  -webkit-app-region: drag;
+  padding: 1px;
+}
+
+#title__title {
+  padding: 7px;
+  font-size: 12px;
+  line-height: 1;
+  color: #aaa;
+}
+
+#title__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  width: 38px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  -webkit-app-region: no-drag;
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1;
+}
+
+#title__close:focus,
+#title__close:active {
+  border: 0;
+  outline: 0;
+}
+
+#title__close:hover {
+  background: #e81123;
+  color: #fff;
 }

@@ -14,9 +14,10 @@ const createWindow = () => {
 
   const mainWindow = new BrowserWindow({
     width: isDev ? 800 : 360,
-    height: isDev ? 600 : 156,
+    height: isDev ? 600 : 186,
     resizable: true,
     useContentSize: true,
+    frame: false,
     show: false,
     backgroundColor: '#121212',
     webPreferences: {

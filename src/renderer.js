@@ -15,6 +15,11 @@ const $control = document.getElementById('control');
 const $controlRangeInput = document.getElementById('control__range__input');
 const $controlLabel = document.getElementById('control__label');
 
+// close button handling
+document.getElementById('title__close').onclick = function () {
+    app.quit();
+};
+
 // range handler
 
 let rangeTimeout = null;
