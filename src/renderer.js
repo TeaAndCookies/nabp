@@ -50,16 +50,9 @@ function disableRange() {
     $controlRangeInput.disabled = true;
 }
 
-function setRange (value, dispatchInputEvent) {
-    var event = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-    });
-
+function setRangeToValueWithoutProcessing(value) {
+    $controlLabel.innerText = `${value} %`;
     $controlRangeInput.value = value;
-    if (dispatchInputEvent) {
-        $controlRangeInput.dispatchEvent(event);
-    }
 }
 
 // websocket server - start
@@ -149,7 +142,7 @@ function handleMessage(ws, type, message) {
             sendOk(ws, message.Id);
 
             enableRange();
-            setRange(50, false);
+            setRangeToValueWithoutProcessing(50);
             sendTcode('L0500I1000');
             break;
         default:
