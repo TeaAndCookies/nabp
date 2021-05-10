@@ -3,7 +3,7 @@
   "productName": "nabp",
   "description": "NABP (Not a Buttplug) is a connector between ScriptPlayer and OSR (TCode) device",
   "main": "src/index.js",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -34,7 +34,7 @@
     "@electron/remote": "^1.1.0",
     "@serialport/parser-delimiter": "^9.0.7",
     "@serialport/parser-readline": "^9.0.7",
-    "electron-log": "^4.3.4",
+    "electron-log": "^4.3.5",
     "electron-squirrel-startup": "^1.0.0",
     "serialport": "^9.0.7",
     "ws": "^7.4.5"

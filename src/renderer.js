@@ -35,7 +35,7 @@ $controlRangeInput.oninput = function () {
         clearTimeout(rangeTimeout);
     }
     rangeTimeout = setTimeout(function () {
-        sendTcode(`L0${position}I250`);
+        sendTcode(`L0${position}I500`);
     }, 10);
 };
 
@@ -147,8 +147,7 @@ function handleMessage(ws, type, message) {
             sendOk(ws, message.Id);
 
             enableRange();
-            setRangeToValueWithoutProcessing(50);
-            sendTcode('L0500I1000');
+            stopDevice();
             break;
         default:
             log.info('noop');
@@ -223,27 +222,30 @@ function createSerialPort (path) {
     );
 }
 
-async function isTCodeDevice (port) {
+const tCodeIdentifier = 'TCode v';
+
+async function getTCodeVersionIfAvailable (port) {
     return new Promise(function (resolve) {
         port.open(function (err) {
             if (err) {
                 log.info(`Error opening port ${port.path}: ${err}`);
-                resolve(false);
+                resolve(null);
 
                 return;
             }
 
             log.info(`Port ${port.path} is open.`);
 
-            let timeout = setTimeout(function () {resolve(false)}, 5000);
+            let timeout = setTimeout(function () {resolve(null)}, 5000);
 
             const parser = port.pipe(new Delimiter({ delimiter: '\n' }));
             parser.on('data', function (data) {
+                data = data.toString();
                 log.info(`Port ${port.path} said: ${data}`);
 
-                if (data.includes('TCode')) {
+                if (data.includes(tCodeIdentifier)) {
                     clearTimeout(timeout);
-                    resolve(true);
+                    resolve(data.substring(tCodeIdentifier.length));
                 }
             })
         });
@@ -251,12 +253,19 @@ async function isTCodeDevice (port) {
 }
 
 let tcodePort = null;
+let supportsStop = false;
 
-function setTCodePort (port) {
+function setTCodePort (port, tCodeVersion) {
     if (tcodePort !== null) {
         log.info(`We already have TCode port at: ${tcodePort.path}`)
 
         return;
+    }
+
+    log.info(`TCode version: ${tCodeVersion}`);
+    supportsStop = parseFloat(tCodeVersion) >= 0.3;
+    if (supportsStop) {
+        log.info('TCode device supports STOP command');
     }
 
     tcodePort = port;
@@ -286,11 +295,11 @@ async function determineSerialPort() {
         await Promise.all(list.map(async function (item) {
             let port = createSerialPort(item.path);
 
-            const isTCode = await isTCodeDevice(port);
+            const tCodeVersion = await getTCodeVersionIfAvailable(port);
 
             // we're checking all ports asynchronously, theoretically we could have already found another TCode port
-            if (isTCode) {
-                setTCodePort(port);
+            if (tCodeVersion !== null) {
+                setTCodePort(port, tCodeVersion);
 
                 return;
             }
@@ -321,6 +330,15 @@ function sendTcode(code) {
             return log.info('Error on write: ', err.message)
         }
     });
+}
+
+function stopDevice() {
+    if (supportsStop) {
+        sendTcode('DSTOP');
+    } else {
+        setRangeToValueWithoutProcessing(50);
+        sendTcode('L0500I1000');
+    }
 }
 
 // serial port handling - done
